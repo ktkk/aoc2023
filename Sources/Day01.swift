@@ -12,7 +12,7 @@ struct Day01: AdventDay {
       guard let first = line.first(where: { $0.isNumber }) else {
         fatalError()
       }
-      guard let second = line.reversed().first(where: { $0.isNumber }) else {
+      guard let second = line.last(where: { $0.isNumber }) else {
         fatalError()
       }
 
