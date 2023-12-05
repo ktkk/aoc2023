@@ -29,8 +29,24 @@ struct Day02: AdventDay {
     return possibleGames.map(\.id).reduce(0, +)
   }
 
-  func part2() -> Any {
-    return ()
+  func part2() throws -> Any {
+    let games = try entities.map { try Game(input: $0) }
+    let powers = games.map { game in
+      guard
+        let minNrOfRedCubes = game.sets.max(by: { $0.nrOfRedCubes < $1.nrOfRedCubes })?
+          .nrOfRedCubes,
+        let minNrOfGreenCubes = game.sets.max(by: { $0.nrOfGreenCubes < $1.nrOfGreenCubes })?
+          .nrOfGreenCubes,
+        let minNrOfBlueCubes = game.sets.max(by: { $0.nrOfBlueCubes < $1.nrOfBlueCubes })?
+          .nrOfBlueCubes
+      else {
+        fatalError()
+      }
+
+      return minNrOfRedCubes * minNrOfGreenCubes * minNrOfBlueCubes
+    }
+
+    return powers.reduce(0, +)
   }
 
   struct Game: Identifiable {
