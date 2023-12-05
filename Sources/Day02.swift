@@ -52,14 +52,17 @@ struct Day02: AdventDay {
   struct Game: Identifiable {
     let id: Int
     let sets: [Set]
+
     init(input: any StringProtocol) throws {
       let (id, content) = try Game.parseId(input)
       self.id = id
       sets = try Game.parseContent(content)
     }
+
     enum ParseError: Error {
       case invalidId
     }
+
     private static func parseId(
       _ input: any StringProtocol
     ) throws -> (Int, rest: any StringProtocol) {
@@ -67,8 +70,10 @@ struct Day02: AdventDay {
       guard let gameId = Int(String(prefix.split(separator: " ")[1])) else {
         throw ParseError.invalidId
       }
+
       return (gameId, input[prefix.endIndex...].dropFirst(2))
     }
+
     private static func parseContent(
       _ input: any StringProtocol
     ) throws -> [Set] {
@@ -79,15 +84,19 @@ struct Day02: AdventDay {
           guard let amount = Int(components[0]) else {
             fatalError()
           }
+
           return (amount, String(components[1]))
         }
       }
+
       return cubes.map { Game.Set($0) }
     }
+
     struct Set {
       var nrOfRedCubes: Int = 0
       var nrOfGreenCubes: Int = 0
       var nrOfBlueCubes: Int = 0
+
       init(_ cubes: [(Int, String)]) {
         for (amount, color) in cubes {
           switch color {
